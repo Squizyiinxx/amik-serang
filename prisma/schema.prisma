@@ -1,0 +1,49 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  name String
+  email String @unique
+  password String 
+  image String
+  createdAt DateTime @default(now()) 
+
+  News News[]
+}
+
+model News {
+  id         Int      @id @default(autoincrement())
+  Judul      String
+  picture    String
+  content    String
+  kategoriId Int
+  userId Int
+  created_at DateTime @default(now()) @map("created_at")
+  updated_at DateTime @updatedAt @map("updated_at")
+
+  kategori   Category @relation(fields: [kategoriId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@map("news")
+}
+
+model Category {
+  id         Int      @id @default(autoincrement())
+  nama       String
+  created_at DateTime @default(now()) @map("created_at")
+  updated_at DateTime @updatedAt @map("updated_at")
+
+  news       News[]
+
+  @@map("category")
+}
