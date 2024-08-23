@@ -11,8 +11,11 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL('/api/auth/signin', req.url));
     }
     const res = NextResponse.next();
-    res.headers.set('Cache-Control', 'public, max-age=3600, must-revalidate');
-
+    if (pathname.startsWith('/admin')) {
+        res.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    } else {
+        res.headers.set('Cache-Control', 'public, max-age=3600, must-revalidate');
+    }
     return res;
 }
 
