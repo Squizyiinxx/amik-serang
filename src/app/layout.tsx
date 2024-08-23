@@ -3,6 +3,7 @@ import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Provider } from "@/components";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const font = Open_Sans({ weight: "400", subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
         <Provider>
         {children}
         <Toaster/>
+          <SpeedInsights />
         </Provider>
         </body>
     </html>
