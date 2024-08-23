@@ -2,24 +2,11 @@ import withBundleAnalyzer from '@next/bundle-analyzer';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    async headers(){
-      return [
-        {
-          source : '/(.*)',
-          headers :[
-            {
-              key : 'Cache-Control',
-              value : 'public, max-age=3600, must-revalidate',
-            },
-          ]
-        }
-      ]
-    },
+  reactStrictMode: true,
+  swcMinify: true,
     experimental: {
         optimizePackageImports: ['@fortawesome/react-fontawesome', '@fortawesome/free-solid-svg-icons', '@fortawesome/free-brands-svg-icons', '@fortawesome/free-regular-svg-icons', '@fortawesome/fontawesome-svg-core','tailwind-merge'],
     },
-  reactStrictMode: true,
-  swcMinify: true,
 };
 
 export default withBundleAnalyzer({

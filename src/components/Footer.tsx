@@ -35,7 +35,8 @@ const Footer = () => {
                 </div>
                 <div className="flex justify-center w-full flex-col items-center px-4 md:px-0">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3967.0709882772417!2d106.16981357498949!3d-6.121147693865504!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e41f5251004f1c7%3A0x7881750ed8139d7d!2sAkademi%20Manajemen%20Informatika%20Dan%20Komputer%20Serang!5e0!3m2!1sen!2sid!4v1723893513734!5m2!1sen!2sid" className='w-full md:w-[400px] h-[300px] border-0' 
-                    allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+                        allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
+                        sandbox="allow-same-origin allow-scripts allow-popups"></iframe>
                 </div>
                 <div className="px-5 w-full flex flex-col gap-5 xl:flex-row justify-center items-center">
                     <div className='flex flex-col justify-center items-start w-full'>

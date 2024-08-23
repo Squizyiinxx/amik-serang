@@ -28,6 +28,8 @@ export default async function Home() {
          50vw"
           width={500}
           height={500}
+          layout="fill"
+          objectFit="cover"
           alt="Jumbotron"
           className="w-full h-full object-cover"
           quality={75}

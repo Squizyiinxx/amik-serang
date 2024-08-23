@@ -62,7 +62,11 @@ const AddNews = () => {
                 const data = await response.json();
                 setCategories(data);
             } catch (error) {
-                console.error('Error fetching categories:', error);
+                toast({
+                    title: 'Failed to add news',
+                    description: error as string,
+                    variant: 'destructive',
+                });
             }
         };
 
