@@ -11,7 +11,7 @@ interface detailProps {
 }
 
 const fetchNewsDetail = async (id: string) => {
-  const res = await fetch(`http://localhost:3000/api/news/${id}`, { cache: 'no-store' });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/news/${id}`, { cache: 'no-store' });
   const data = await res.json();
 
   if (data) {
@@ -29,6 +29,7 @@ const fetchNewsDetail = async (id: string) => {
 
   return data;
 };
+
 
 const NewsDetailContent = async ({ id }: { id: string }) => {
   const data = await fetchNewsDetail(id);

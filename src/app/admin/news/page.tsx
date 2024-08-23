@@ -1,7 +1,7 @@
 import React from 'react'
 import LayoutPage from '../layouts/LayoutPage'
 import { DataTables } from '../components/DataTables'
-import { Button, buttonVariants } from '@/components/ui/button'
+import {buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
 
 
