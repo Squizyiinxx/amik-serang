@@ -23,7 +23,7 @@ const LayoutPage = async ({ children, title }: LayoutPageProps) => {
         <div className="w-full flex items-center justify-between">
           <h1 className='text-white text-lg font-bold uppercase'>{title}</h1>
           <div className="flex gap-6 items-center">
-              <Link href={'/admin/news'} className={buttonVariants({variant:'secondary'})}>Halaman Website</Link>
+              <Link href={'/'} className={buttonVariants({variant:'secondary'})}>Halaman Website</Link>
             <div className="flex gap-2 items-center">
               <Image src={session?.user?.image || '/logo.png'} width={40} height={40} priority alt='logo' className='rounded-full border border-slate-200 w-[40px] h-[40px] object-cover' />
               <MyDropdown name={session?.user?.name} itemDropdown={dropdownItem} />
