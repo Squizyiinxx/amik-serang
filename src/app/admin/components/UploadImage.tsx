@@ -1,34 +1,34 @@
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 interface UploadImageProps {
     name: string;
     label: string;
-    value?: string
+    value?: string;
 }
 
-const UploadImage: React.FC<UploadImageProps> = ({ name, label,value }) => {
-    const [preview, setPreview] = useState<string | null>(null);
+const UploadImage: React.FC<UploadImageProps> = ({ name, label, value }) => {
+    const [preview, setPreview] = useState<string | null>(value || null);
     const [fileName, setFileName] = useState<string>('No file chosen');
     const { setValue } = useFormContext();
 
-    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
             setFileName(file.name);
-            const reader = new FileReader();
             setValue(name, file);
-            reader.onloadend = () => {
-                setPreview(reader.result as string);
-            };
+
+            const reader = new FileReader();
+            reader.onloadend = () => setPreview(reader.result as string);
             reader.readAsDataURL(file);
         }
-    };
+    }, [name, setValue]);
+
     useEffect(() => {
-        if(value) {   
-            setFileName(value);
-            setPreview(`/uploads/${value}`);
+        if (value) {
+            setFileName(value.split('/').pop() || 'No file chosen');
+            setPreview(value);
         }
     }, [value]);
 
@@ -49,7 +49,13 @@ const UploadImage: React.FC<UploadImageProps> = ({ name, label,value }) => {
             </div>
             {preview && (
                 <div className="mt-4 p-2">
-                    <Image width={200} height={200} src={preview} alt="Selected Preview" className="h-32 w-32 object-cover" />
+                    <Image
+                        src={preview}
+                        alt="Selected Preview"
+                        width={200}
+                        height={200}
+                        className="h-32 w-32 object-cover"
+                    />
                 </div>
             )}
         </div>

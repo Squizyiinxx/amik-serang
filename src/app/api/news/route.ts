@@ -1,37 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import fs from 'fs';
 import path from 'path';
-import { Readable } from 'stream';
-import { pipeline } from 'stream';
-import { promisify } from 'util';
+import supabase from '@/lib/supabase';
 
 const prisma = new PrismaClient();
-const pump = promisify(pipeline);
-
-
-const webReadableStreamToNodeReadable = (webStream: ReadableStream<Uint8Array>): Readable => {
-    const nodeReadable = new Readable({
-        read() { }
-    });
-
-    const reader = webStream.getReader();
-
-    (async () => {
-        try {
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-                nodeReadable.push(Buffer.from(value));
-            }
-            nodeReadable.push(null);
-        } catch (err) {
-            nodeReadable.destroy();
-        }
-    })();
-
-    return nodeReadable;
-};
 
 export const POST = async (req: NextRequest) => {
     if (req.method === 'POST') {
@@ -42,11 +14,27 @@ export const POST = async (req: NextRequest) => {
                 throw new Error('File not found in form data');
             }
 
-            const filePath = path.join(process.cwd(), 'public/uploads', file.name);
-            const nodeReadableStream = webReadableStreamToNodeReadable(file.stream());
-            const writeStream = fs.createWriteStream(filePath);
+            const randomDigits = Math.floor(100000 + Math.random() * 900000);
+            const newFileName = `AMIK-${randomDigits}${path.extname(file.name)}`;
+            const { data: uploadData, error: uploadError } = await supabase.storage
+                .from('web-amik-storage')
+                .upload(`uploads/${newFileName}`, file, {
+                    cacheControl: '3600',
+                    upsert: false,
+                    contentType: file.type,
+                });
 
-            await pump(nodeReadableStream, writeStream);
+            if (uploadError) {
+                throw new Error('Error uploading file to Supabase storage: ' + uploadError.message);
+            }
+
+            const publicURL = supabase.storage
+                .from('web-amik-storage')
+                .getPublicUrl(`uploads/${newFileName}`).data.publicUrl;
+
+            if (!publicURL) {
+                throw new Error('Failed to generate public URL');
+            }
 
             const { Judul, content, kategoriId, userId } = Object.fromEntries(formData.entries());
             const data = {
@@ -54,15 +42,15 @@ export const POST = async (req: NextRequest) => {
                 content: content as string,
                 kategoriId: parseInt(kategoriId as string, 10),
                 userId: parseInt(userId as string, 10),
-                picture: file.name,
+                picture: publicURL,
             };
+
             const newNews = await prisma.news.create({
-                data: data
+                data: data,
             });
 
             return NextResponse.json(newNews);
         } catch (error) {
-            console.error('Error processing request:', error);
             return NextResponse.json({ error: 'Error processing request' }, { status: 500 });
         }
     } else {

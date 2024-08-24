@@ -59,7 +59,7 @@ export const columns: ColumnDef<News>[] = [
         accessorKey: "picture",
         header: "Picture",
         cell: ({ row }) => (
-            <div className="capitalize"><Image src={`/uploads/${row.getValue("picture")}`} alt="picture" width={100} height={100} className="rounded-lg shadow" /></div>
+            <div className="capitalize"><Image src={row.getValue("picture")} alt="picture" width={100} height={100} className="rounded-lg shadow" /></div>
         ),
     },
     {
@@ -148,7 +148,7 @@ export const columns: ColumnDef<News>[] = [
                 }).then(async (result) => {
                     if (result.isConfirmed) {
                         try{
-                            const res = await fetch(`http://localhost:3000/api/news/${id}`, {
+                            const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/news/${id}`, {
                                 method: "DELETE",
                             })
                             Swal.fire("Saved!", "", "success");

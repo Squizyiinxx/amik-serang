@@ -22,7 +22,7 @@ const NewsItem = ({ data }: Props) => {
     return (
         <div className="flex flex-col items-center px-4 mt-4">
             <Link href={'/berita/' + data.id}>
-                <Image src={`/uploads/${data?.picture}`}
+                <Image src={data?.picture}
                     quality={50}
                     priority
                     width={250}

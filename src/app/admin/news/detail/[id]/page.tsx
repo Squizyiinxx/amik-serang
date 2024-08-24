@@ -43,7 +43,7 @@ const NewsDetailContent = async ({ id }: { id: string }) => {
           <p className="font-bold">{data?.created_at} WIB</p>
           <div className="flex gap-4 items-center">
             <Image
-              src={`/uploads${data?.user?.image}`}
+              src={`/${data?.user?.image}`}
               width={40}
               height={40}
               className="rounded-full border border-slate-200 w-[40px] h-[40px] object-cover"
@@ -61,7 +61,7 @@ const NewsDetailContent = async ({ id }: { id: string }) => {
         </div>
         <div className="w-[500px] py-5">
           <Image
-            src={`/uploads/${data.picture}`}
+            src={data.picture}
             className="rounded-lg shadow w-full h-[300px] object-cover"
             priority
             width={500}

@@ -26,8 +26,6 @@ export default async function Home() {
           sizes="(max-width: 640px) 100vw, 
          (max-width: 768px) 75vw, 
          50vw"
-          width={500}
-          height={500}
           layout="fill"
           objectFit="cover"
           alt="Jumbotron"

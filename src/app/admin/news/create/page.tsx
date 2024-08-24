@@ -63,7 +63,7 @@ const AddNews = () => {
                 setCategories(data);
             } catch (error) {
                 toast({
-                    title: 'Failed to add news',
+                    title: 'Failed get categories',
                     description: error as string,
                     variant: 'destructive',
                 });

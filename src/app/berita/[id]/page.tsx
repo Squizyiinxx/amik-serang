@@ -5,49 +5,68 @@ import { fetchNewsById, fetchNewsByLimit } from '@/utils/fetchUser';
 import Image from 'next/image';
 import React, { Suspense } from 'react'
 
-interface detailProps {
+const cleanDomain = (domain: string): string => {
+
+    domain = domain.replace(/\.$/, '');
+
+    const tlds = ['.com', '.net', '.org', '.co', '.io'];
+    if (!tlds.some(tld => domain.endsWith(tld))) {
+        domain = `${domain}.com`;
+    }
+
+    return domain;
+};
+
+const formatTextWithLinks = (text: string) => {
+    const urlPattern = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[-A-Z0-9+&@#\/%=~_|$])/gi;
+    return text.split(urlPattern).map((part, index) =>
+        urlPattern.test(part) ? (
+            <a key={index} href={cleanDomain(part)} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                {part}
+            </a>
+        ) : (
+            part
+        )
+    );
+};
+
+interface DetailProps {
     params: {
         id: string;
     }
 }
 
-const DetailNews = async ({ params }: detailProps) => {
+const DetailNews = async ({ params }: DetailProps) => {
     const title = 'Berita';
     const { id } = params;
     const data = await fetchNewsById(id);
     const newsByLimit = await fetchNewsByLimit();
 
     const paragraphs = data?.content
-            .split('.')
-            .reduce((acc: string[], sentence: string, index: number, array: string[]) => {
-                const trimmedSentence = sentence.trim();
-
-                if (trimmedSentence.endsWith('"') || trimmedSentence.includes(',"')) {
-                    acc.push((acc.pop() || '') + trimmedSentence + '.');
-                } else {
-                    acc.push(trimmedSentence + (index !== array.length - 1 ? '.' : ''));
-                }
-                return acc;
-            }, [])
-            .map((paragraph: string, index: number) => (
-                <p key={index} className="mt-4 text-slate-600">
-                    {paragraph}
-                </p>
-            ));
+        .split(/\.\s+/) 
+        .filter((paragraph: string) => paragraph.trim()) 
+        .map((sentence: string, index: number) => (
+            <p key={index} className="mt-4 text-slate-600">
+                {formatTextWithLinks(sentence.trim()) + (index < data.content.split(/\.\s+/).length - 1 ? '.' : '')}
+            </p>
+        ));
 
     return (
         <UserLayout title={title}>
             <div className="max-w-6xl px-4 mt-20 mx-auto">
                 <div className="flex flex-col justify-center items-center">
-                    <h1 className='font-bold md:text-3xl xl:text-4xl leading-7 text-2xl text-slate-700 uppercase text-center'>{data?.Judul}</h1>
+                    <h1 className='font-bold md:text-3xl xl:text-4xl leading-7 text-2xl text-slate-700 uppercase text-center'>
+                        {data?.Judul}
+                    </h1>
                     <div className="flex justify-between w-full items-center mt-10 md:px-10">
                         <div className="flex justify-center items-center gap-2">
                             <Image
-                                src={`${data?.user?.image}`}
+                                src={data?.user?.image || '/default-profile.png'} 
                                 alt="person"
                                 width={50}
                                 height={50}
-                                className='rounded-full w-[40px] h-[40px] md:w-[50px] md:h-[50px] object-cover' />
+                                className='rounded-full w-[40px] h-[40px] md:w-[50px] md:h-[50px] object-cover'
+                            />
                             <div className="flex flex-col justify-center gap-1">
                                 <p className='text-slate-800 font-bold'>{data?.user?.name}</p>
                                 <p className='text-slate-500 text-xs sm:text-sm'>
@@ -59,7 +78,8 @@ const DetailNews = async ({ params }: detailProps) => {
                                         minute: '2-digit',
                                         timeZone: 'Asia/Jakarta',
                                         hour12: false,
-                                    }).format(new Date(data?.created_at))}</p>
+                                    }).format(new Date(data?.created_at))}
+                                </p>
                             </div>
                         </div>
                         <div className="flex flex-col items-center justify-center">
@@ -70,7 +90,7 @@ const DetailNews = async ({ params }: detailProps) => {
                     </div>
                     <div className="w-full md:px-10">
                         <Image
-                            src={`/uploads/${data?.picture}`}
+                            src={data?.picture || '/logo.png'} 
                             alt="news"
                             priority
                             width={800}
@@ -79,13 +99,15 @@ const DetailNews = async ({ params }: detailProps) => {
                         />
                     </div>
                     <Suspense fallback={<Skeleton />}>
-                        <div className="mt-10 text-slate-600 px-4 md:px-10">{paragraphs}</div>
+                        <div className="mt-10 text-slate-600 px-4 md:px-10">
+                            {paragraphs}
+                        </div>
                     </Suspense>
                 </div>
             </div>
             <NewsComponent newsData={newsByLimit} title={'Home'} />
         </UserLayout>
-    )
+    );
 }
 
 export default DetailNews;

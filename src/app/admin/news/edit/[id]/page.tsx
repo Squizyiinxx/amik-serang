@@ -77,7 +77,7 @@ const EditPage: React.FC<EditPageProps> = ({ params }) => {
 
             setValue('Judul', newsData.Judul);
             setValue('content', newsData.content);
-            setValue('kategoriId', newsData.kategoriId);
+            setValue('kategoriId', newsData?.kategori?.nama);
             setValue('picture', newsData.picture);
             setValue('userId', session?.user?.name || '');
         };
