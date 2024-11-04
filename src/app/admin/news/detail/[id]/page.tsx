@@ -79,7 +79,7 @@ const NewsDetailContent = async ({ id }: { id: string }) => {
 const DetailPage = ({ params }: detailProps) => {
   const { id } = params;
   const title = 'Detail News';
-  const url = [{name:'news', url: '/admin/news'}, {name:'detail', url: '/admin/news/detail'}];
+  const url = [{ name: 'news', url: '/admin/news' }, { name: 'detail', url: '/admin/news/detail' }];
 
   return (
     <LayoutSubPage title={title} jk="News">

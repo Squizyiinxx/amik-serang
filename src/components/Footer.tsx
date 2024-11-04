@@ -56,9 +56,6 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
-            <div className="flex items-center justify-center py-5 text-slate-100 bg-slate-800">
-                <p className='text-xs sm:text-sm md:text-base'>Copyright © 2024 Kampus Amik Serang. All Rights Reserved.</p>
-            </div>
         </div>
     )
 }

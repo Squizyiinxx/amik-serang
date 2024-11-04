@@ -1,7 +1,7 @@
 'use client'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
+import React from 'react'
 
 interface myInputTextProps {
   type: string,
@@ -13,10 +13,11 @@ interface myInputTextProps {
   errors: any,
   background?: string;
   readonly?: boolean
+  cls?: string,
   action?: () => void
 }
 
-const myInputText = ({ type, placeholder, name, labelText, register, errors,showPassword, action,background,readonly }: myInputTextProps) => {
+const myInputText = ({type, placeholder, name, labelText, register, errors,showPassword, action,background,readonly }: myInputTextProps) => {
  
   return (
     <div className='flex flex-col gap-2 text-white w-full'>
@@ -25,7 +26,7 @@ const myInputText = ({ type, placeholder, name, labelText, register, errors,show
         <input type={type} id={name} name={name} {...register(name)} placeholder={placeholder} className='w-full bg-transparent focus:outline-none' readOnly={readonly} />
         {
           name === 'password' && (
-            <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} className='text-slate-700 w-4 cursor-pointer' onClick={action} />
+            <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} className='text-blue-700 w-4 cursor-pointer' onClick={action} />
           )
         }
       </div>

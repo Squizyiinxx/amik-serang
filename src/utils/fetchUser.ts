@@ -25,6 +25,13 @@ export const fetchNewsAll = async () => {
     }
     return res.json();
 }
+export const fetchAnnouncement = async () => {
+    const res = await fetch(`${baseUrl}/api/announcement`, { cache: 'no-store' });
+    if (!res.ok) {
+        throw new Error('Failed to fetch announcement');
+    }
+    return res.json();
+}
 export const fetchNewsByCategory = async (id: string) => {
     const res = await fetch(`${baseUrl}/api/getNews?category=${id}`, { cache: 'no-store' });
     if (!res.ok) {

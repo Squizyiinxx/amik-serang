@@ -14,13 +14,19 @@ async function main() {
 
     // Seed users
     const hashPassword = await hash('123456', 10);
-    await prisma.user.create({
-        data: {
+    await prisma.user.upsert({
+        where: { email: 'admin@amik.com' },
+        update: {
+            name: 'Alice',
+            password: hashPassword,
+            image: '/person.jpeg'
+        },
+        create: {
             name: 'Alice',
             email: 'admin@amik.com',
             password: hashPassword,
             image: '/person.jpeg'
-        },
+        }
     });
 }
 

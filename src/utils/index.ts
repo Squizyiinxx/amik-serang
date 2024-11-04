@@ -1,5 +1,5 @@
 
-import { faDisplay, faNewspaper } from "@fortawesome/free-solid-svg-icons";
+import { faBullhorn, faDisplay, faNewspaper } from "@fortawesome/free-solid-svg-icons";
 
 export const navLink = [
     {
@@ -11,6 +11,11 @@ export const navLink = [
         name: "News",
         icon : faNewspaper,
         link: '/admin/news'
+    },
+    {
+        name: "Pengumuman",
+        icon: faBullhorn,
+        link: '/admin/announcement'
     }
 ]
 
