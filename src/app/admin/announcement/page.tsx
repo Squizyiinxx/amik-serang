@@ -63,7 +63,7 @@ const Announcement = () => {
         formData.append('date', date);
 
         try {
-            const url = editMode ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/announcement/${editId}` : '/api/announcement';
+            const url = editMode ? `/api/announcement/${editId}` : '/api/announcement';
             const method = editMode ? 'PUT' : 'POST';
 
             const res = await fetch(url, {
@@ -116,7 +116,7 @@ const Announcement = () => {
             if (result.isConfirmed) {
                 setIsLoading(true);
                 try {
-                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/announcement/${id}`, {
+                    const res = await fetch(`/api/announcement/${id}`, {
                         method: 'DELETE',
                     });
 
