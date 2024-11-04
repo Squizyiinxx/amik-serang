@@ -1,6 +1,7 @@
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from '@prisma/client';
 
+const prisma = new PrismaClient(); 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
     const { id } = params;
 
